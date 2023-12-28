@@ -37,8 +37,6 @@ export default function Home() {
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 <Marker position={DEFAULT_CENTER}>
                   <Popup>
