@@ -10,6 +10,8 @@ import styles from '@styles/Home.module.scss';
 
 const DEFAULT_CENTER = [38.907132, -77.036546]
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 export default function Home() {
   return (
     <Layout>
