@@ -5,7 +5,6 @@ import Layout from '@components/Layout';
 import Section from '@components/Section';
 import Container from '@components/Container';
 import Map from '@components/Map';
-import Button from '@components/Button';
 
 import styles from '@styles/Home.module.scss';
 
@@ -19,6 +18,8 @@ export default function Home() {
     fetcher
   );
 
+  // Uncomment to test Santa's location at 2:34:30 UTC
+  // const currentDate = new Date('2022-12-25T02:34:30.115Z');
   const currentDate = new Date(Date.now());
   const currentYear = currentDate.getFullYear();
 
@@ -41,7 +42,7 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>Next.js Leaflet Starter</title>
+        <title>Track Santa on Xmas</title>
         <meta name="description" content="Create mapping apps with Next.js Leaflet Starter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -49,17 +50,18 @@ export default function Home() {
       <Section>
         <Container>
           <h1 className={styles.title}>
-            Next.js Leaflet Starter
+            Santa Tracker
           </h1>
 
           <Map className={styles.homeMap} width="800" height="400" center={[0, 0]} zoom={1}>
-            {({ TileLayer, Marker, Popup }) => (
+            {({ TileLayer, Marker, Popup }, Leaflet) => (
               <>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 {destinations?.map(({ id, arrival, departure, location, city, region }) => {
+
                   const arrivalDate = new Date(arrival);
                   const arrivalHours = arrivalDate.getHours()
                   const arrivalMinutes = arrivalDate.getMinutes()
@@ -70,8 +72,39 @@ export default function Home() {
                   const departureMinutes = departureDate.getMinutes()
                   const departureTime = `${departureHours}:${departureMinutes}`;
 
+                  const santaWasHere = currentDate.getTime() - departureDate.getTime() > 0;
+                  const santaIsHere = currentDate.getTime() - arrivalDate.getTime() > 0 && !santaWasHere;
+
+                  let iconUrl = '/images/tree-marker-icon.png';
+                  let iconRetinaUrl = '/images/tree-marker-icon-2x.png';
+
+                  if ( santaWasHere ) {
+                    iconUrl = '/images/gift-marker-icon.png';
+                    iconRetinaUrl = '/images/gift-marker-icon-2x.png';
+                  }
+
+                  if ( santaIsHere ) {
+                    iconUrl = '/images/santa-marker-icon.png';
+                    iconRetinaUrl = '/images/santa-marker-icon-2x.png';
+                  }
+
+                  let className = '';
+
+                  if ( santaIsHere ) {
+                    className = `${className} ${styles.iconSantaIsHere}`;
+                  }
+
                   return (
-                    <Marker key={id} position={[location.lat, location.lng]}>
+                    <Marker
+                      key={id}
+                      position={[location.lat, location.lng]}
+                      icon={Leaflet.icon({
+                        iconUrl,
+                        iconRetinaUrl,
+                        iconSize: [41, 41],
+                        className
+                      })}
+                    >
                       <Popup>
                         <strong>Location:</strong> { city }, { region }
                         <br />
@@ -85,14 +118,6 @@ export default function Home() {
               </>
             )}
           </Map>
-
-          <p className={styles.description}>
-            <code className={styles.code}>yarn create next-app -e https://github.com/colbyfayock/next-leaflet-starter</code>
-          </p>
-
-          <p className={styles.view}>
-            <Button href="https://github.com/colbyfayock/next-leaflet-starter">Vew on GitHub</Button>
-          </p>
         </Container>
       </Section>
     </Layout>
