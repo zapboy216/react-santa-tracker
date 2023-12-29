@@ -1,11 +1,11 @@
 import Head from 'next/head';
+import useSWR from 'swr';
 
 import Layout from '@components/Layout';
 import Section from '@components/Section';
 import Container from '@components/Container';
 import Map from '@components/Map';
-import Button from '@components/Button';
-import useSWR from 'swr';
+
 
 import styles from '@styles/Home.module.scss';
 
@@ -18,7 +18,6 @@ export default function Home() {
     'https://firebasestorage.googleapis.com/v0/b/santa-tracker-firebase.appspot.com/o/route%2Fsanta_en.json?alt=media&2018b',
     fetcher
   );
-
   return (
     <Layout>
       <Head>
@@ -37,6 +36,8 @@ export default function Home() {
             {({ TileLayer, Marker, Popup }) => (
               <>
                 <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                 />
                 <Marker position={DEFAULT_CENTER}>
                   <Popup>
@@ -47,9 +48,7 @@ export default function Home() {
             )}
           </Map>
 
-      
-
-          
+         
         </Container>
       </Section>
     </Layout>
