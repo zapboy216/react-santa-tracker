@@ -48,10 +48,10 @@ export default function Home() {
       <Section>
         <Container>
           <h1 className={styles.title}>
-            Santa Tracker
+            Where is Santa?
           </h1>
 
-          <Map className={styles.homeMap} width="800" height="400" center={[0, 0]} zoom={1}>
+          <Map className={styles.homeMap} width="1500" height="800" center={[0, 0]} zoom={1}>
             {({ TileLayer, Marker, Popup }, Leaflet) => (
               <>
                 <TileLayer
