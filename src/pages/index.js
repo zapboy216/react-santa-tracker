@@ -43,7 +43,7 @@ export default function Home() {
     <Layout>
       <Head>
         <title>Track Santa on Xmas</title>
-        <meta name="description" content="Create mapping apps with Next.js Leaflet Starter" />
+        <meta name="description" content="Create mapping apps with Next.js" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
